@@ -4,6 +4,15 @@
                  @click-left="navLeftClick"/>
     <!--高德map地图-->
     <div id="map" style="width: 100%;height: 300px;"></div>
+    <!--导航-->
+    <van-button icon="share-o" type="primary"
+                @click="navigation.show = true">导航
+    </van-button>
+    <!--导航面板-->
+    <van-action-sheet description="请选择导航app" cancel-text="取消"
+                      v-model:show="navigation.show"
+                      :actions="navigation.options"
+                      @select="navigation.select"/>
 </template>
 
 <script>
@@ -11,10 +20,14 @@
     import {useRouter} from 'vue-router';
     //引入高德地图工具类
     import MapLoader from "@/utils/amap.js";
-    import {onMounted} from 'vue';
+    import {onMounted, ref, reactive} from 'vue';
+    import {ActionSheet} from 'vant';
 
     export default {
         name: "Amap",
+        components: {
+            [ActionSheet.name]: ActionSheet,
+        },
         setup() {
             const $router = useRouter();
             const navLeftClick = () => {
@@ -54,8 +67,40 @@
                     }
                 });
             });
+            //导航
+            const navigation = reactive({
+                show: false,
+                options: [
+                    {
+                        name: '高德地图',
+                        url: 'https://uri.amap.com/marker'
+                    },
+                    {
+                        name: '百度地图',
+                        url: 'https://api.map.baidu.com/marker'
+                    },
+                ],
+                select: (item) => {
+                    let {name, url} = item;
+                    switch (name) {
+                        case '高德地图': {
+                            url += `?position=${117},${39}`;
+                        }
+                            break;
+                        case '百度地图': {
+                            url += `?location=${39},${117}&output=html&src=webapp.baidu.openAPIdemo`;
+                        }
+                            break;
+                        default: {
+                            return;
+                        }
+                    }
+                    window.open(url);
+                }
+            });
             return {
-                navLeftClick
+                navLeftClick,
+                navigation
             }
         }
     }
