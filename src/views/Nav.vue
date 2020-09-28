@@ -21,6 +21,7 @@
                 {title: '首页', path: '/'},
                 {title: '登录', path: '/login'},
                 {title: 'demo', path: '/demo'},
+                {title: 'list', path: '/list'},
                 {title: '高德地图', path: '/other/amap'},
             ]);
             //路由跳转

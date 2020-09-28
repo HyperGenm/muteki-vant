@@ -72,11 +72,11 @@
                     title: 'axios', value: '',
                     click: () => {
                         $axios({
-                            allUrl: true,
-                            url: 'http://39.96.52.201/muteki/api/login',
-                            success(res) {
+                            url: '/login',
+                            method: 'post',
+                            success(data) {
                                 $vant.alert({
-                                    message: JSON.stringify(res)
+                                    message: JSON.stringify(data)
                                 });
                             }
                         });
