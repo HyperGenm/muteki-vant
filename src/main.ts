@@ -11,5 +11,5 @@ import {NavBar, Cell, CellGroup, Field, Button} from 'vant';
 //创建app挂载到App.vue组件
 createApp(App)
     .use(router)
-    .use(NavBar).use(Cell).use(CellGroup).use(Field).use(Button)
+    .use(NavBar).use(CellGroup).use(Cell).use(Field).use(Button)
     .mount('#app');

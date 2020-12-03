@@ -8,24 +8,31 @@
                :url="pageList.url"
                :data="pageList.data"
                @change="pageList.change">
-        <van-cell v-for="(item,index) in pageList.list"
-                  v-model:title="item.methodName"
-                  v-model:value="item.id"
-                  v-model:label="item.content"/>
+        <!--一定要设置无数据的时候,占位用的dom,否则可能出错-->
+        <template v-if="null == pageList.list || 0 >= pageList.list.length">
+            <van-empty image="search" description="无数据"/>
+        </template>
+        <template v-else>
+            <van-cell v-for="item in pageList.list" :key="item.id"
+                      v-model:title="item.methodName"
+                      v-model:value="item.id"
+                      v-model:label="item.content"/>
+        </template>
     </page-list>
 </template>
 
 <script>
-    import PageList from "../components/list/PageList";
+    import PageList from "@/components/list/PageList";
     import {ref, reactive, nextTick} from 'vue';
-    import {Tabs, Tab} from 'vant';
+    import {Tabs, Tab, Empty} from 'vant';
 
     export default {
         name: "List",
         components: {
-            PageList,
             [Tabs.name]: Tabs,
             [Tab.name]: Tab,
+            [Empty.name]: Empty,
+            'page-list': PageList,
         },
         setup(props) {
             //tab

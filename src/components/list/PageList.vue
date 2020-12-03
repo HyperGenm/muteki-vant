@@ -29,7 +29,7 @@
     /**引入vant组件*/
     import {Toast} from 'vant';
 
-    import {ref, reactive, toRefs} from 'vue';
+    import {ref, reactive} from 'vue';
 
     import $function from '@/utils/function.ts';
     import $vant from '@/utils/vant.ts';
@@ -159,7 +159,6 @@
             });
             //获取数据
             const requestData = (type) => {
-                console.log(pageNum.value)
                 let {url, method, contentType, timeout, data = {}, pageSize, timeShowLoadAnimation} = props;
                 let _axios = {
                     //请求的url
