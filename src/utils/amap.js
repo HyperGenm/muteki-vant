@@ -1,5 +1,5 @@
 //高德开放平台 Web端(JS API) key  https://console.amap.com/dev/key/app
-const DEFAULT_KEY = 'e41e19bc267e8f8e35902b95d6fb221d';
+const DEFAULT_KEY = 'e41e19bc267e8f8e359021d';
 
 //引入全局方法
 import $vant from "./vant.ts";

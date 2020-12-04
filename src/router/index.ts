@@ -46,11 +46,11 @@ const routes: Array<RouteRecordRaw> = [
             }
         ]
     },
-    /*{
+    {
         path: '/:pathMatch(.*)*',
         name: '404',
         redirect: '/'
-    },*/
+    },
 ]
 
 const router = createRouter({
