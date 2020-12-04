@@ -6,6 +6,8 @@ import Qs from 'qs';
 import {Toast} from 'vant';
 /*引入全局方法*/
 import $function from './function'
+//引入封装的vant
+import $vant from './vant';
 //引入router
 import {useRouter} from 'vue-router';
 
@@ -100,7 +102,7 @@ const myAxios = function (
         }
         /**token过期处理*/
         if (401 === res.data.code) {
-            $function.errorMsg('登陆过期，自动登录中。。。');
+            $vant.errorMsg('登陆过期，自动登录中。。。');
             let timer = setTimeout(() => {
                 clearTimeout(timer);
                 useRouter().replace('login');
@@ -118,7 +120,7 @@ const myAxios = function (
         }
         /**处理code不为0的出错请求*/
         if (200 !== res.data.code) {
-            $function.errorMsg(res.data.msg);
+            $vant.errorMsg(res.data.msg);
             consoleWarnTable(`请求出错url:${url}`, res['data']);
             return;
         }
@@ -143,7 +145,7 @@ const myAxios = function (
             }
             return;
         }
-        $function.errorMsg(`请求失败，详情:${JSON.stringify(error)}`);
+        $vant.errorMsg(`请求失败，详情:${JSON.stringify(error)}`);
         console.warn(`请求失败url:${url}`, error);
         try {
             fail(error);
