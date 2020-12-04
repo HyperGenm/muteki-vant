@@ -37,7 +37,7 @@
     import {useRouter} from 'vue-router';
 
     export default {
-        name: "PageList",
+        name: "WeiPageList",
         components: {
             [PullRefresh.name]: PullRefresh,
             [List.name]: List,
@@ -123,6 +123,10 @@
                 type: Number,
                 default: 222
             }
+        },
+        mounted() {
+            //对外抛出自身
+            this.$emit('my-ref', this);
         },
         setup(props, {emit}) {
             //加载失败

@@ -1,7 +1,7 @@
 <template>
     <van-nav-bar title="高德地图"
                  left-text="返回" left-arrow
-                 @click-left="navLeftClick"/>
+                 @clickLeft="navLeftClick"/>
     <!--高德map地图-->
     <div id="map" style="width: 100%;height: 300px;"></div>
     <!--导航-->

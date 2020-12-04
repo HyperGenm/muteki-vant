@@ -1,7 +1,7 @@
 <template>
     <van-nav-bar title="demo"
                  left-text="返回" left-arrow
-                 @click-left="navLeftClick"/>
+                 @clickLeft="navLeftClick"/>
     <van-cell-group title="vant组件">
         <van-button type="primary" size="small">小型按钮</van-button>
         <van-circle :currentRate="1000" :speed="1000"

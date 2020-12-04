@@ -82,7 +82,7 @@ module.exports = {
                     analyzerMode: 'server',
                     analyzerHost: 'localhost',
                     // 运行后的端口号
-                    analyzerPort: 8000,
+                    analyzerPort: 8888,
                     reportFilename: 'report.html',
                     defaultSizes: 'parsed',
                     //是否自动打开浏览器

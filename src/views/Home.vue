@@ -1,6 +1,6 @@
 <template>
     <van-nav-bar title="首页"/>
-    <van-cell title="导航页" to="/nav" is-link/>
+    <van-cell title="导航页" to="/other/nav" is-link/>
     <van-empty description="演示"/>
     <van-tabbar v-model="activeTab">
         <van-tabbar-item icon="home-o">标签</van-tabbar-item>

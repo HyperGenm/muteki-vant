@@ -14,37 +14,43 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Home.vue')
     },
     {
-        path: '/nav',
-        name: 'nav',
-        component: () => import('@/views/Nav.vue')
-    },
-    {
         path: '/login',
         name: 'login',
         component: () => import('@/views/Login.vue')
     },
     {
-        path: '/demo',
-        name: 'demo',
-        component: () => import('@/views/Demo.vue')
-    },
-    {
-        path: '/list',
-        name: 'list',
-        component: () => import('@/views/List.vue')
-    },
-    {
         path: '/other',
         name: 'other',
         component: () => import('@/views/other/Index.vue'),
+        redirect: '/other/nav',
         children: [
+            {
+                path: 'nav',
+                name: 'nav',
+                component: () => import('@/views/other/Nav.vue')
+            },
+            {
+                path: 'demo',
+                name: 'demo',
+                component: () => import('@/views/other/Demo.vue')
+            },
+            {
+                path: 'list',
+                name: 'list',
+                component: () => import('@/views/other/List.vue')
+            },
             {
                 path: 'amap',
                 name: 'amap',
                 component: () => import('@/views/other/Amap.vue')
             }
         ]
-    }
+    },
+    /*{
+        path: '/:pathMatch(.*)*',
+        name: '404',
+        redirect: '/'
+    },*/
 ]
 
 const router = createRouter({
