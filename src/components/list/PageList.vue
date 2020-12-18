@@ -1,18 +1,16 @@
 <template>
-    <van-pull-refresh style="min-height: 100vh;"
-                      v-model="pull.loading"
+    <van-pull-refresh v-model="pull.loading"
                       :pulling-text="pullingText"
                       :loosing-text="loosingText"
                       :success-text="successText"
                       @refresh="pull.onRefresh">
         <van-list v-model:loading="onLoad.loading"
                   :finished="onLoad.finish"
-                  finished-text="没有更多了"
+                  :finished-text="finishText"
                   v-model:error.sync="error.error"
                   :error-text="error.errorText"
                   :offset="offset"
                   :loading-text="loadingText"
-                  :finished-text="finishedText"
                   @load="onLoad.load">
             <slot></slot>
         </van-list>
@@ -29,7 +27,7 @@
     /**引入vant组件*/
     import {Toast} from 'vant';
 
-    import {ref, reactive} from 'vue';
+    import {ref, reactive, computed} from 'vue';
 
     import $function from '@/utils/function.ts';
     import $vant from '@/utils/vant.ts';
@@ -134,19 +132,19 @@
                 error: false,
                 text: '加载失败，请重试'
             });
-            //当前的页码
-            let pageNum = ref(1);
-            //展示的数组
-            let showList = reactive([]);
+            //分页
+            let pageInfo = reactive({
+                //当前页码
+                pageNum: 1,
+                //数据
+                list: [],
+            });
             //下拉刷新
             let pull = reactive({
                 loading: false,
                 onRefresh: () => {
-                    pageNum.value = 1;
-                    showList = [];
                     pull.loading = true;
-                    onLoad.finish = false;
-                    requestData('pull');
+                    resetDataRequest();
                 }
             });
             //上拉加载
@@ -158,11 +156,18 @@
                 //加载
                 load: () => {
                     onLoad.loading = true;
-                    requestData('onLoad');
+                    requestData();
                 }
             });
+            //重置参数
+            const resetDataRequest = () => {
+                pageInfo.pageNum = 1;
+                pageInfo.list = [];
+                onLoad.finish = false;
+                requestData();
+            };
             //获取数据
-            const requestData = (type) => {
+            const requestData = () => {
                 let {url, method, contentType, timeout, data = {}, pageSize, timeShowLoadAnimation} = props;
                 let _axios = {
                     //请求的url
@@ -176,7 +181,7 @@
                 };
                 /**axios请求参数添加随机字符串*/
                 data['__t'] = (new Date()).getTime();
-                data['pageNum'] = pageNum.value;
+                data['pageNum'] = pageInfo.pageNum;
                 data['pageSize'] = pageSize;
                 /**axios请求处理不同请求方式时的参数*/
                 //get
@@ -185,18 +190,8 @@
                 } else {
                     _axios['data'] = Qs.stringify(data, {indices: false});
                 }
-                switch (type) {
-                    case 'pull': {
-                        pull.loading = true;
-                    }
-                        break;
-                    case 'onLoad': {
-                        onLoad.loading = true;
-                    }
-                        break;
-                    default: {
-                    }
-                }
+                //开启加载中，防止重复请求数据
+                onLoad.loading = true;
                 /**timeShowLoadAnimation时间之后开启加载中动画*/
                 let loading = null;
                 let loadingTimer = setTimeout(() => {
@@ -236,13 +231,16 @@
                             //如果为空，代表没数据
                             if (null == list || 0 >= list.length) {
                                 onLoad.finish = true;
-                                $vant.errorMsg('没有更多了');
-                                return;
+                            } else {
+                                pageInfo.pageNum++;
+                                pageInfo.list = pageInfo.list.concat(list);
                             }
-                            pageNum.value++;
-                            showList = showList.concat(list);
-                            //对外抛出change事件
-                            emit('change', showList);
+                            try {
+                                //对外抛出change事件
+                                emit('change', pageInfo.list);
+                            } catch (e) {
+                                console.error(e);
+                            }
                         } catch (e) {
                             error.errorText = `返回格式错误，示例:${JSON.stringify({
                                 List: [],
@@ -268,26 +266,25 @@
                     console.warn(`url:${url}:请求出错，详情"${error}`);
                 });
             }
-            //重置参数
-            const resetDataRequest = () => {
-                pageNum.value = 1;
-                showList = [];
-                onLoad.finish = false;
-                requestData();
-            };
+            //没有更多了
+            let finishText = computed(() => {
+                if (null == pageInfo.list
+                    || 0 >= pageInfo.list.length) {
+                    return '';
+                }
+                return '没有更多了';
+            });
             return {
                 //加载失败
                 error,
-                //展示的列表
-                showList,
-                //请求的页码
-                pageNum,
                 //下拉
                 pull,
                 //上拉
                 onLoad,
                 //重置参数请求
-                resetDataRequest
+                resetDataRequest,
+                //没有更多了
+                finishText,
             }
         }
     }

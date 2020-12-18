@@ -121,7 +121,11 @@ function confirm(
         lockScroll,
         allowHtml
     }).then(() => {
-        confirm();
+        try {
+            confirm();
+        } catch (e) {
+            console.error(e);
+        }
     }).catch(() => {
         cancel();
     });
