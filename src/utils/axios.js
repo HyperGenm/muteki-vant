@@ -58,7 +58,8 @@ const myAxios = function (
     let loadingTimer = setTimeout(() => {
         loading = Toast.loading({
             message: '加载中...',
-            forbidClick: true
+            forbidClick: true,
+            duration: 0,
         });
     }, timeShowLoadAnimation);
     let _axios = {
@@ -145,7 +146,12 @@ const myAxios = function (
             }
             return;
         }
-        $vant.errorMsg(`请求失败，详情:${JSON.stringify(error)}`);
+        $vant.alert({
+            title: '系统异常',
+            message: (
+                `message:${error['message']}`
+                + `\r\n url:${url}`)
+        });
         console.warn(`请求失败url:${url}`, error);
         try {
             fail(error);
