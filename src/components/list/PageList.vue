@@ -127,6 +127,7 @@
             this.$emit('my-ref', this);
         },
         setup(props, {emit}) {
+            const $router = useRouter();
             //加载失败
             let error = reactive({
                 error: false,
@@ -215,7 +216,7 @@
                             $vant.errorMsg('登陆过期，自动登录中。。。');
                             let timer = setTimeout(() => {
                                 clearTimeout(timer);
-                                useRouter().replace('login');
+                                $router.replace('login');
                             }, 3000);
                             return;
                         }

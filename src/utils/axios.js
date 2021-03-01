@@ -9,7 +9,7 @@ import $function from './function'
 //引入封装的vant
 import $vant from './vant';
 //引入router
-import {useRouter} from 'vue-router';
+import $router from '../router/index.js';
 
 //请求拦截器
 axios.interceptors.request.use(
@@ -106,7 +106,7 @@ const myAxios = function (
             $vant.errorMsg('登陆过期，自动登录中。。。');
             let timer = setTimeout(() => {
                 clearTimeout(timer);
-                useRouter().replace('login');
+                $router.replace('login');
             }, 3000);
             return;
         }
